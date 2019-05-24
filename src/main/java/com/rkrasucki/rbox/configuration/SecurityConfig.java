@@ -17,11 +17,14 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private BCryptPasswordEncoder bcrypt;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private DataSource dataSource;
 
     @Autowired
-    private DataSource dataSource;
+    public SecurityConfig(BCryptPasswordEncoder theBCryptPasswordEncoder, DataSource theDataSource){
+        this.bCryptPasswordEncoder = theBCryptPasswordEncoder;
+        this.dataSource = theDataSource;
+    }
 
     @Value("${spring.queries.users-query}")
     private String usersQuery;
@@ -29,12 +32,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${spring.queries.roles-query}")
     private String rolesQuery;
 
+
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().usersByUsernameQuery(usersQuery)
                 .authoritiesByUsernameQuery(rolesQuery)
-                .dataSource(dataSource).passwordEncoder(bcrypt);
+                .dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
     }
 
+    @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
@@ -49,8 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .formLogin()
                         .loginPage("/login")
                         .failureUrl("/login?error=true")
-                        .defaultSuccessUrl("/").usernameParameter("email")
-                        .passwordParameter("password")
+                        .defaultSuccessUrl("/")
+                            .usernameParameter("username")
+                            .passwordParameter("password")
                 .and()
                     .logout()
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -59,7 +66,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .exceptionHandling().accessDeniedPage("/denied");
     }
 
-    public void congfigure(WebSecurity webSec) throws Exception {
+    @Override
+    public void configure(WebSecurity webSec) {
         webSec.ignoring()
                 .antMatchers("/resources/**", "/static/**",
                         "/css/**", "/js/**", "/images/**", "/incl/**");
