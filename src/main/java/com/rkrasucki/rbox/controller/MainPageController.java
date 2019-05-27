@@ -1,4 +1,4 @@
-package com.rkrasucki.rbox.Controller;
+package com.rkrasucki.rbox.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

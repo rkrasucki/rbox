@@ -1,4 +1,4 @@
-package com.rkrasucki.rbox.Controller;
+package com.rkrasucki.rbox.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

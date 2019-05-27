@@ -1,7 +1,7 @@
 package com.rkrasucki.rbox.utilities.validator;
 
 
-import com.rkrasucki.rbox.Model.User;
+import com.rkrasucki.rbox.model.User;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;

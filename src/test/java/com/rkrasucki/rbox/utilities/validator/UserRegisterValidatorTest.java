@@ -1,6 +1,6 @@
 package com.rkrasucki.rbox.utilities.validator;
 
-import com.rkrasucki.rbox.Model.User;
+import com.rkrasucki.rbox.model.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;

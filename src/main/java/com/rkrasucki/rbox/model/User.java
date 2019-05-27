@@ -1,4 +1,4 @@
-package com.rkrasucki.rbox.Model;
+package com.rkrasucki.rbox.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
