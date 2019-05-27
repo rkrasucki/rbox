@@ -22,14 +22,15 @@
 
 <body>
 <div>
-<h3>   Registration successfully! </h3>
+    <h3>    Registration successfully! </h3>
 <hr>
 <br><br>
 </div>
 <div>
     <a th:href="@{/login}"
        class="btn btn-primary"
-       role="button" aria-pressef="true">
+       role="button" aria-pressef="true"
+       th:text="#{register.button.backToLoginPage}">
         Back to login page
     </a>
 </div>
