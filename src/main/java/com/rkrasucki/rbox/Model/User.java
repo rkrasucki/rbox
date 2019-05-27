@@ -1,7 +1,5 @@
 package com.rkrasucki.rbox.Model;
 
-import org.hibernate.validator.constraints.Length;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
@@ -34,6 +32,9 @@ public class User {
     @Column(name = "password")
     @NotNull
     private String password;
+    @Transient
+    @NotNull
+    private String passwordConfirm;
     @Column(name = "active")
     @NotNull
     private int active;
@@ -92,6 +93,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 
     public int getActive() {
