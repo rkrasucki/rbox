@@ -57,20 +57,24 @@ public class RegisterController {
             return "registration-form";
         }
 
+        new UserRegisterValidator().validate(theUser, result);
+
         if(userExist != null) {
             logger.info("Processing registration user: " + username + " is already Exist.");
-            result.rejectValue("username",
-                    messageSource.getMessage("error.registrationPage.username.isAlreadyExist", null, locale));
-            theModel.addAttribute("user", new User());
+//            result.rejectValue("username",
+//                    messageSource.getMessage("error.registrationPage.username.isAlreadyExist", null, locale));
+            String errorMessage = messageSource.getMessage("error.registrationPage.username.isAlreadyExist", null, locale);
+            theModel.addAttribute("user", theUser);
+            theModel.addAttribute("registrationError", errorMessage);
             return "registration-form";
 
         }
 
         if(userEmailExist !=null) {
             logger.info("Processing registration user email: " + userEmail + " is already Exist.");
-            result.rejectValue("email",
-                    messageSource.getMessage("error.registrationPage.email.isAlreadyExist", null, locale));
-            theModel.addAttribute("user", new User());
+            String errorMessage =   messageSource.getMessage("error.registrationPage.email.isAlreadyExist", null, locale);
+            theModel.addAttribute("user", theUser);
+            theModel.addAttribute("registrationError", errorMessage);
             return "registration-form";
         }
 
