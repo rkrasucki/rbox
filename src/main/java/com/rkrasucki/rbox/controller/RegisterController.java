@@ -61,8 +61,6 @@ public class RegisterController {
 
         if(userExist != null) {
             logger.info("Processing registration user: " + username + " is already Exist.");
-//            result.rejectValue("username",
-//                    messageSource.getMessage("error.registrationPage.username.isAlreadyExist", null, locale));
             String errorMessage = messageSource.getMessage("error.registrationPage.username.isAlreadyExist", null, locale);
             theModel.addAttribute("user", theUser);
             theModel.addAttribute("registrationError", errorMessage);
