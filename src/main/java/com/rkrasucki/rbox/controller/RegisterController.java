@@ -50,14 +50,11 @@ public class RegisterController {
         User userExist = userService.findByUsername(theUser.getUsername());
         User userEmailExist = userService.findByEmail(theUser.getEmail());
 
-
         new UserRegisterValidator().validate(theUser, result);
 
         if(result.hasErrors()) {
             return "registration-form";
         }
-
-        new UserRegisterValidator().validate(theUser, result);
 
         if(userExist != null) {
             logger.info("Processing registration user: " + username + " is already Exist.");
@@ -65,7 +62,6 @@ public class RegisterController {
             theModel.addAttribute("user", theUser);
             theModel.addAttribute("registrationError", errorMessage);
             return "registration-form";
-
         }
 
         if(userEmailExist !=null) {
