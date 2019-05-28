@@ -7,6 +7,7 @@ import com.rkrasucki.rbox.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.RoleNotFoundException;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -38,13 +39,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(User user) {
+    public void saveUser(User user) throws RoleNotFoundException {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(1);
 
         Role role = roleRepository.findByRole("USER");
-        user.setRoles(new HashSet<>(Arrays.asList(role)));
+        ifRoleExistIsAddToUser(user, role);
 
         userRepository.save(user);
+    }
+
+    private void ifRoleExistIsAddToUser(User user, Role role) throws RoleNotFoundException {
+        if(role !=null){
+            user.setRoles(new HashSet<>(Arrays.asList(role)));
+        }
+        else {
+            throw new RoleNotFoundException("Not found basic role: USER");
+        }
     }
 }

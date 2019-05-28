@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.management.relation.RoleNotFoundException;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -40,7 +41,7 @@ public class RegisterController {
 
     @PostMapping("/adduser")
     public String processAddUser(@ModelAttribute("user") User theUser,
-                                 BindingResult result, Model theModel, Locale locale) {
+                                 BindingResult result, Model theModel, Locale locale) throws RoleNotFoundException{
 
         String username = theUser.getUsername();
         String userEmail = theUser.getEmail();
