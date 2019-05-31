@@ -4,6 +4,7 @@ import com.rkrasucki.rbox.model.User;
 import com.rkrasucki.rbox.service.UserService;
 import com.rkrasucki.rbox.utilities.UserUtilities;
 import com.rkrasucki.rbox.utilities.validator.ChangePasswordValidator;
+import com.rkrasucki.rbox.utilities.validator.UserUpdateProfileValidator;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -89,5 +90,36 @@ public class ProfileControllerPage {
             return "profile";
         }
 
+    }
+
+    @GetMapping("/editprofile")
+    public String showEditProfilePage(Model theModel) {
+        String username = UserUtilities.getLoggedUser();
+        User theUser = userService.findByUsername(username);
+        theModel.addAttribute("user", theUser);
+        return "profile-edit";
+    }
+
+    @PostMapping("/updateprofile")
+    public String updateUserProfile(@ModelAttribute("user") User theUser,
+                                    BindingResult result, Model theModel, Locale Locale) {
+
+        String username = UserUtilities.getLoggedUser();
+        String newFirstName = theUser.getFirstName();
+        String newLastName = theUser.getLastName();
+        String newEmail = theUser.getEmail();
+
+        new UserUpdateProfileValidator().validate(theUser, result);
+
+        if (result.hasErrors()) {
+            return "profile-edit";
+        }
+
+        if(username != null){
+            userService.updateUserProfile(theUser, username);
+            logger.info("User profile saved successfully fo user: " + username);
+        }
+
+        return "profile";
     }
 }

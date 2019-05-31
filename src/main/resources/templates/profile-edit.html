@@ -21,7 +21,7 @@
 <div th:insert="fragments/navbar :: navbar"></div>
 <body>
 
-<h2 th:text="#{profile.titlePage}"> User profile</h2>
+<h2 th:text="#{profile.titlePage.editProfile}"> Profile - edit</h2>
 <hr>
 <div class="container">
     <div class="well">
@@ -43,7 +43,9 @@
                     </div>
 
                     <!-- Profile Form -->
-                    <form th:class="form-horizontal">
+                    <form th:action="@{/updateprofile}"
+                          th:method="POST"
+                          th:class="form-horizontal">
 
                         <!-- User name -->
                         <label th:text="#{profile.field.username}">Username</label>
@@ -53,59 +55,42 @@
 
                         <!-- First Name -->
                         <label th:text="#{profile.field.firstName}">First name</label>
+                        <p th:if="${#fields.hasErrors('user.firstName')}" class="label label-danger" th:errors="*{user.firstName}"></p>
                         <div style="margin-bottom: 25px" class="input-group">
-                            <input type="text" name="firstName" class="form-control" th:value="*{user.firstName}" readonly>
+                            <input type="text" name="firstName" class="form-control" th:value="*{user.firstName}">
                         </div>
 
                         <!-- Last name -->
                         <label th:text="#{profile.field.lastName}">Last name</label>
+                        <p th:if="${#fields.hasErrors('user.lastName')}" class="label label-danger" th:errors="*{user.lastName}"></p>
                         <div style="margin-bottom: 25px" class="input-group">
-                            <input type="text" name="lastName" class="form-control" th:value="*{user.lastName}" readonly>
+                            <input type="text" name="lastName" class="form-control" th:value="*{user.lastName}">
                         </div>
 
                         <!-- Email -->
                         <label th:text="#{profile.field.email}">Email</label>
+                        <p th:if="${#fields.hasErrors('user.email')}" class="label label-danger" th:errors="*{user.email}"></p>
                         <div style="margin-bottom: 25px" class="input-group">
-                            <input type="text" name="email" class="form-control" th:value="*{user.email}" readonly>
+                            <input type="text" name="email" class="form-control" th:value="*{user.email}">
                         </div>
 
-                        <!-- Active -->
-                        <label th:text="#{profile.field.active}">Active</label>
-                        <div style="margin-bottom: 25px" class="input-group">
-                            <input type="checkbox"  name="active" class="form-control" th:checked="*{user.active}" readonly>
+                        <div style="margin-top: 10px" class="form-group">
+                            <div class="col-sm-6 controls">
+                                <button type="submit" class="btn btn-success" th:text="#{profile.button.saveProfile}">Save</button>
+                            </div>
                         </div>
 
-                        <!-- Role -->
-                        <label th:text="#{profile.field.role}">Role</label>
-                        <div style="margin-bottom: 25px" class="input-group"
-                             th:switch="*{user.roleNumber}">
-                                <input type="text" name="roleNumber" class="form-control" th:case="1" th:value="#{global.user}" readonly>
-                                <input type="text" name="roleNumber" class="form-control" th:case="2" th:value="#{global.admin}" readonly>
-
+                        <div>
+                            <a th:href="@{/profile}"
+                               class="btn btn-primary"
+                               role="button" aria-pressef="true"
+                               th:text="#{profile.button.cancelEditProfile}"
+                            >
+                                Cancel
+                            </a>
                         </div>
 
                     </form>
-
-                    <div>
-                        <a th:href="@{/changepass}"
-                           class="btn btn-primary"
-                           role="button" aria-pressef="true"
-                           th:text="#{profile.button.changePassword}"
-                        >
-                            Change Password
-                        </a>
-                    </div>
-
-                    <div>
-                        <a th:href="@{/editprofile}"
-                           class="btn btn-primary"
-                           role="button" aria-pressef="true"
-                           th:text="#{profile.button.editProfile}"
-                        >
-                            Edit
-                        </a>
-                    </div>
-
                 </div>
             </div>
 

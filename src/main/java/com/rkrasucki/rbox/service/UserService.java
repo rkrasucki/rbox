@@ -11,6 +11,7 @@ public interface UserService {
     void saveUser(User user) throws RoleNotFoundException;
     boolean checkIfValidOldPassword(User theUser, String oldPassword);
     void updateUserPassword(String username, String newPassword);
+    void updateUserProfile(User theUser, String username);
 
 
 }
