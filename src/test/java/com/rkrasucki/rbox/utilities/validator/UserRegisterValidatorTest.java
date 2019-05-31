@@ -24,6 +24,7 @@ public class UserRegisterValidatorTest {
         theUser.setPassword("A1test_pass");
         theUser.setPasswordConfirm("A1test_pass");
         theUser.setEmail("test@email.com");
+        theUser.setId(1);
     }
 
     @Test

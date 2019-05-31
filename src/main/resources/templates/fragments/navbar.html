@@ -12,11 +12,14 @@
             <a class="navbar-brand" href="#">DemoApp</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
+
             <ul class="nav navbar-nav">
+
                 <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}" th:text="#{main.href.profile}">Profile</a></li>
                 <li><a href="#">Projects</a></li>
                 <li><a href="#">Contact</a></li>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
@@ -28,7 +31,6 @@
 </div>
 <div>
 
-    DUP{A
         <span sec:authorize="isAuthenticated()">
                 | Logged user: <b><span sec:authentication="name"></span></b> |
                 Roles: <b><span sec:authentication="principal.authorities"></span></b>

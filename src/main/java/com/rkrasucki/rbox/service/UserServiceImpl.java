@@ -6,6 +6,7 @@ import com.rkrasucki.rbox.repository.RoleRepository;
 import com.rkrasucki.rbox.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.relation.RoleNotFoundException;
 import java.util.Arrays;
@@ -56,5 +57,17 @@ public class UserServiceImpl implements UserService {
         else {
             throw new RoleNotFoundException("Not found basic role: USER");
         }
+    }
+
+    @Override
+    public boolean checkIfValidOldPassword(User theUser, String oldPassword) {
+        return bCryptPasswordEncoder.matches(oldPassword, theUser.getPassword());
+    }
+
+
+    @Override
+    @Transactional
+    public void updateUserPassword(String username, String newPassword) {
+        userRepository.updateUserPassword(username, bCryptPasswordEncoder.encode(newPassword));
     }
 }
