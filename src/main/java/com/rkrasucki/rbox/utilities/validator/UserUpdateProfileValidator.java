@@ -1,6 +1,7 @@
 package com.rkrasucki.rbox.utilities.validator;
 
 import com.rkrasucki.rbox.model.User;
+import com.rkrasucki.rbox.model.UserDto;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -18,7 +19,7 @@ public class UserUpdateProfileValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        User u = (User) obj;
+        UserDto u = (UserDto) obj;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "error.profileEdit.emptyField");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "error.profileEdit.emptyField");
@@ -27,7 +28,7 @@ public class UserUpdateProfileValidator implements Validator {
         isEmailValid(errors, u);
     }
 
-    private void isEmailValid(Errors errors, User u) {
+    private void isEmailValid(Errors errors, UserDto u) {
         if(u.getEmail() != null) {
             boolean isMatch = EmailValidator.isValid(u.getEmail());
             if(!isMatch) {

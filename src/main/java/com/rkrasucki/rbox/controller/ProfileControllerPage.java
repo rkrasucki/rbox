@@ -1,6 +1,7 @@
 package com.rkrasucki.rbox.controller;
 
 import com.rkrasucki.rbox.model.User;
+import com.rkrasucki.rbox.model.UserDto;
 import com.rkrasucki.rbox.service.UserService;
 import com.rkrasucki.rbox.utilities.UserUtilities;
 import com.rkrasucki.rbox.utilities.validator.ChangePasswordValidator;
@@ -40,7 +41,17 @@ public class ProfileControllerPage {
         User theUser = userService.findByUsername(username);
         int roleNumber = theUser.getRoles().iterator().next().getId();
         theUser.setRoleNumber(roleNumber);
-        theModel.addAttribute("user", theUser);
+
+        UserDto userDto = new UserDto();
+        userDto.setUsername(theUser.getUsername());
+        userDto.setFirstName(theUser.getFirstName());
+        userDto.setLastName(theUser.getLastName());
+        userDto.setEmail(theUser.getEmail());
+        userDto.setActive(theUser.getActive());
+        userDto.setRoleNumber(roleNumber);
+
+
+        theModel.addAttribute("user", userDto);
 
         return "profile";
     }
@@ -49,21 +60,28 @@ public class ProfileControllerPage {
     public String changePassword(Model theModel) {
         String username = UserUtilities.getLoggedUser();
         User theUser = userService.findByUsername(username);
-        theModel.addAttribute("user", theUser);
+
+        UserDto userDto = new UserDto();
+        userDto.setUsername(theUser.getUsername());
+
+        theModel.addAttribute("user", userDto);
         return "change-password";
     }
 
 
     @PostMapping("/updatepass")
     public String updateUserPassword(
-            @ModelAttribute("user") User theUser,
+            @ModelAttribute("user") UserDto userDto,
             BindingResult result, Model theModel, Locale locale) {
 
-        String oldPassword = theUser.getPassword();
-        String newPassword = theUser.getNewPassword();
+        String oldPassword = userDto.getPassword();
+        String newPassword = userDto.getNewPassword();
         String username = UserUtilities.getLoggedUser();
-        User user= userService.findByUsername(username);
-        boolean isOldPasswordMatch = userService.checkIfValidOldPassword(user, oldPassword);
+        User theUser= userService.findByUsername(username);
+
+
+
+        boolean isOldPasswordMatch = userService.checkIfValidOldPassword(theUser, oldPassword);
 
 
         if(!isOldPasswordMatch) {
@@ -71,11 +89,11 @@ public class ProfileControllerPage {
             String errorMessageInvalid = messageSource.getMessage("error.profile.oldPasswordIsNotMatch", null, locale);
             theModel.addAttribute("invalid", errorMessageInvalid);
             theModel.addAttribute("passwordIsNotMatch", errorMessage);
-            theModel.addAttribute(theUser);
+            theModel.addAttribute(userDto);
             return "change-password";
         }
 
-        new ChangePasswordValidator().validate(theUser, result);
+        new ChangePasswordValidator().validate(userDto, result);
         new ChangePasswordValidator().checkNewPasswordIsMatch(newPassword, result);
 
         if(result.hasErrors()) {
@@ -85,7 +103,15 @@ public class ProfileControllerPage {
             userService.updateUserPassword(username, newPassword);
             logger.info("Password successful changed for user: " + username);
             String successMessage = messageSource.getMessage("profile.information.success", null, locale);
-            theModel.addAttribute(user);
+
+            userDto.setUsername(theUser.getUsername());
+            userDto.setFirstName(theUser.getFirstName());
+            userDto.setLastName(theUser.getLastName());
+            userDto.setEmail(theUser.getEmail());
+            userDto.setActive(theUser.getActive());
+            userDto.setRoleNumber(theUser.getRoleNumber());
+
+            theModel.addAttribute(userDto);
             theModel.addAttribute("success", successMessage);
             return "profile";
         }
@@ -96,30 +122,34 @@ public class ProfileControllerPage {
     public String showEditProfilePage(Model theModel) {
         String username = UserUtilities.getLoggedUser();
         User theUser = userService.findByUsername(username);
-        theModel.addAttribute("user", theUser);
+
+        UserDto userDto = new UserDto();
+        userDto.setUsername(theUser.getUsername());
+        userDto.setFirstName(theUser.getFirstName());
+        userDto.setLastName(theUser.getLastName());
+        userDto.setEmail(theUser.getEmail());
+
+        theModel.addAttribute("user", userDto);
         return "profile-edit";
     }
 
     @PostMapping("/updateprofile")
-    public String updateUserProfile(@ModelAttribute("user") User theUser,
-                                    BindingResult result, Model theModel, Locale Locale) {
+    public String updateUserProfile(@ModelAttribute("user") UserDto userDto,
+                                    BindingResult result, Model theModel, Locale locale) {
 
         String username = UserUtilities.getLoggedUser();
-        String newFirstName = theUser.getFirstName();
-        String newLastName = theUser.getLastName();
-        String newEmail = theUser.getEmail();
 
-        new UserUpdateProfileValidator().validate(theUser, result);
+        new UserUpdateProfileValidator().validate(userDto, result);
 
         if (result.hasErrors()) {
             return "profile-edit";
         }
 
         if(username != null){
-            userService.updateUserProfile(theUser, username);
+            userService.updateUserProfile(userDto, username);
             logger.info("User profile saved successfully fo user: " + username);
+            String successMessage = messageSource.getMessage("profile.information.success", null, locale);
         }
-
         return "profile";
     }
 }

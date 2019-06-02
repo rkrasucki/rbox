@@ -2,6 +2,7 @@ package com.rkrasucki.rbox.service;
 
 import com.rkrasucki.rbox.model.Role;
 import com.rkrasucki.rbox.model.User;
+import com.rkrasucki.rbox.model.UserDto;
 import com.rkrasucki.rbox.repository.RoleRepository;
 import com.rkrasucki.rbox.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -73,10 +74,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUserProfile(User theUser, String username) {
-        String firstName = theUser.getFirstName();
-        String lastName = theUser.getLastName();
-        String email = theUser.getEmail();
+    public void updateUserProfile(UserDto userDto, String username) {
+        String firstName = userDto.getFirstName();
+        String lastName = userDto.getLastName();
+        String email = userDto.getEmail();
 
         userRepository.updateUserProfile(username, firstName, lastName, email);
 
