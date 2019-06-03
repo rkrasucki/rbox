@@ -7,6 +7,7 @@ import com.rkrasucki.rbox.utilities.UserUtilities;
 import com.rkrasucki.rbox.utilities.validator.ChangePasswordValidator;
 import com.rkrasucki.rbox.utilities.validator.UserUpdateProfileValidator;
 import org.springframework.context.MessageSource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,7 @@ public class ProfileControllerPage {
     }
 
     @GetMapping("/profile")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public String showUserProfile(Model theModel) {
 
         String username = UserUtilities.getLoggedUser();
@@ -57,6 +59,7 @@ public class ProfileControllerPage {
     }
 
     @GetMapping("/changepass")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public String changePassword(Model theModel) {
         String username = UserUtilities.getLoggedUser();
         User theUser = userService.findByUsername(username);
@@ -119,6 +122,7 @@ public class ProfileControllerPage {
     }
 
     @GetMapping("/editprofile")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public String showEditProfilePage(Model theModel) {
         String username = UserUtilities.getLoggedUser();
         User theUser = userService.findByUsername(username);

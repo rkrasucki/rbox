@@ -15,9 +15,9 @@
 
             <ul class="nav navbar-nav">
 
-                <li class="active"><a href="#">Home</a></li>
+                <li class="active"><a th:href="@{/}">Home</a></li>
                 <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}" th:text="#{main.href.profile}">Profile</a></li>
-                <li><a href="#">Projects</a></li>
+                <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/admin}">Admin</a></li>
                 <li><a href="#">Contact</a></li>
 
             </ul>
@@ -28,12 +28,15 @@
 
     </div>
 </nav>
-</div>
-<div>
+    <div>
 
-        <span sec:authorize="isAuthenticated()">
-                | Logged user: <b><span sec:authentication="name"></span></b> |
-                Roles: <b><span sec:authentication="principal.authorities"></span></b>
-            </span>
+
+        | Logged user: <b><span sec:authentication="name"></span></b> |
+        Roles: <b><span sec:authentication="principal.authorities"></span></b>
+
+    </div>
+
+
 </div>
+
 </html>
