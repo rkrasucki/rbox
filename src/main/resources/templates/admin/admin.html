@@ -20,9 +20,15 @@
 </head>
 <div th:insert="fragments/navbar :: navbar"></div>
 <body>
+<div class="container">
+    <h2 th:text="#{admin.titlePage}"> Admin tools</h2>
+    <hr>
 
-<h2 th:text="#{admin.titlePage}"> Admin tools</h2>
-<hr>
+    <div class="row">
+        <div class="col-sm-2"><div th:insert="fragments/menuAdmin :: menuAdmin"></div>
+        <div class="col-sm-10"></div></div>
+    </div>
+</div>
 
 </body>
 </html>
