@@ -1,0 +1,56 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+<div th:fragment="admin-menu">
+
+
+    <div class="container">
+
+        <h3>Users list</h3>
+
+        <table sec:authorize="hasAuthority('ADMIN')" class="table table-bordered table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th>No</th>
+                <th>Login</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Active</th>
+                <th>Role</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="tempUser,iterationStatus : ${users}">
+                <td th:text="${iterationStatus.count}">1</td>
+                <td th:text="${tempUser.username}"/>
+                <td th:text="${tempUser.firstName}"/>
+                <td th:text="${tempUser.lastName}"/>
+                <td th:text="${tempUser.email}"/>
+                <td th:switch="*{tempUser.active}">
+                    <a class="bg-success" type="text" th:case="1" th:text="#{global.active}"/>
+                    <a class="bg-danger" type="text" th:case="0" th:text="#{global.noActive}"/>
+                </td>
+                <td th:switch="*{tempUser.roleNumber}">
+                    <a th:case="1" th:text="#{global.user}"/>
+                    <a th:case="2" th:text="#{global.admin}"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+
+
+
+
+</div>
+
+</html>
