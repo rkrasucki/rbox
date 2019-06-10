@@ -24,13 +24,10 @@
 <h2 th:text="#{profile.titlePage}"> User profile</h2>
 <hr>
 <div class="container">
-    <div class="well">
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#home" data-toggle="tab">Profile</a></li>
-        </ul>
-        <div id="myTabContent" class="tab-content">
-            <div class="tab-pane active in" id="home">
-                <div style="padding-top: 30px" class="panel-body">
+
+
+
+                <div style="padding-top: 10px" class="panel-body">
 
                     <!-- Place for messages: error, alert etc ... -->
                     <div class="form-group">
@@ -69,20 +66,22 @@
                             <input type="text" name="email" class="form-control" th:value="*{user.email}" readonly>
                         </div>
 
+                        <!-- Role -->
+                        <label th:text="#{profile.field.role}">Role</label>
+                        <div style="margin-bottom: 25px" class="input-group"
+                             th:switch="*{user.roleNumber}">
+                            <input type="text" name="roleNumber" class="form-control" th:case="1" th:value="#{global.user}" readonly>
+                            <input type="text" name="roleNumber" class="form-control" th:case="2" th:value="#{global.admin}" readonly>
+
+                        </div>
+
                         <!-- Active -->
                         <label th:text="#{profile.field.active}">Active</label>
                         <div style="margin-bottom: 25px" class="input-group">
                             <input type="checkbox"  name="active" class="form-control" th:checked="*{user.active}" readonly>
                         </div>
 
-                        <!-- Role -->
-                        <label th:text="#{profile.field.role}">Role</label>
-                        <div style="margin-bottom: 25px" class="input-group"
-                             th:switch="*{user.roleNumber}">
-                                <input type="text" name="roleNumber" class="form-control" th:case="1" th:value="#{global.user}" readonly>
-                                <input type="text" name="roleNumber" class="form-control" th:case="2" th:value="#{global.admin}" readonly>
 
-                        </div>
 
                     </form>
 
@@ -95,7 +94,7 @@
                             Change Password
                         </a>
                     </div>
-
+                    <br>
                     <div>
                         <a th:href="@{/editprofile}"
                            class="btn btn-primary"
@@ -105,12 +104,10 @@
                             Edit
                         </a>
                     </div>
-
                 </div>
-            </div>
 
-        </div>
-    </div>
+
+
 
 
 

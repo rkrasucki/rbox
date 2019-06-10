@@ -2,8 +2,10 @@ package com.rkrasucki.rbox.service;
 
 import com.rkrasucki.rbox.model.Role;
 import com.rkrasucki.rbox.model.User;
+import com.rkrasucki.rbox.model.UserDto;
 import com.rkrasucki.rbox.repository.RoleRepository;
 import com.rkrasucki.rbox.repository.UserRepository;
+import com.rkrasucki.rbox.repository.VerificationTokenRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -28,9 +30,10 @@ public class UserServiceImplTest {
 
     @Mock
     private RoleRepository mockRoleRepository;
-
+    private VerificationTokenRepository mockTokenRepository;
     private UserServiceImpl userServiceUnderTest;
     private User theUser;
+    private UserDto userDto;
     private Role basicUserRole;
 
     @Before
@@ -39,7 +42,8 @@ public class UserServiceImplTest {
         userServiceUnderTest = new UserServiceImpl(
                 mockUserRepository,
                 mockRoleRepository,
-                mockBCryptPasswordEncoder);
+                mockBCryptPasswordEncoder,
+                mockTokenRepository);
 
         theUser = new User();
         theUser.setUsername("test_username");
@@ -93,8 +97,8 @@ public class UserServiceImplTest {
 
     @Test
     public void testSaveUserIsActive()  throws RoleNotFoundException {
-        final int active = 1;
-        userServiceUnderTest.saveUser(theUser);
+        final int active = 0;
+        userServiceUnderTest.registerNewUserAccount(theUser);
 
         assertEquals(active, theUser.getActive());
     }
@@ -104,7 +108,7 @@ public class UserServiceImplTest {
         Role roleTest = new Role();
         roleTest.setRole("USER");
 
-        userServiceUnderTest.saveUser(theUser);
+        userServiceUnderTest.registerNewUserAccount(theUser);
         List<Role> fromSavedUser = new ArrayList<>(theUser.getRoles());
 
         assertEquals(roleTest, fromSavedUser.get(0));
@@ -115,10 +119,11 @@ public class UserServiceImplTest {
         Role roleTest = new Role();
         roleTest.setRole("BROKEN_ROLE");
 
-        userServiceUnderTest.saveUser(theUser);
+        userServiceUnderTest.registerNewUserAccount(theUser);
         List<Role> fromSavedUser = new ArrayList<>(theUser.getRoles());
 
         assertNotEquals(roleTest, fromSavedUser.get(0));
     }
+
 
 }

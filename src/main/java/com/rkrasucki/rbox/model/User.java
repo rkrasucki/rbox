@@ -33,7 +33,6 @@ public class User {
     @NotNull
     private String password;
     @Transient
-    @NotNull
     private String passwordConfirm;
     @Column(name = "active")
     @NotNull

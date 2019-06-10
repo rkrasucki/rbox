@@ -21,8 +21,18 @@
 </head>
 
 <body>
+
+<!-- Place for messages: error, alert etc ... -->
+<div class="form-group">
+    <div class="col-xs-15">
+        <!-- message -->
+        <div th:if="${message != null}">
+            <div th:text="${message}" class="alert alert-primary"></div>
+        </div>
+    </div>
+</div>
 <div>
-    <h3>    Registration successfully! </h3>
+
 <hr>
 <br><br>
 </div>
