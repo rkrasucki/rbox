@@ -60,6 +60,25 @@
                 </tr>
                 </tbody>
             </table>
+
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <td align="right">
+                        <span th:if="${currentPage > 1}" >
+                            <a class="btn btn-primary" role="button" aria-pressef="true"
+                               th:href="@{/admin/users/{index}(index=${currentPage - 1})}"
+                               th:text="#{link.back}"> Back
+                            </a> &nbsp;&nbsp;
+                        </span>
+                        <span th:if="${currentPage < totalPages}">
+                            <a class="btn btn-primary" role="button" aria-pressef="true"
+                               th:href="@{/admin/users/{index}(index=${currentPage + 1})}"
+                               th:text="#{link.next}"> Next
+                            </a>
+                        </span>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 
